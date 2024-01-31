@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Itim&display=swap">
+    
+    <script defer src="main.js"></script>
+    
+    <title>Coupon Website</title>
+</head>
+<body>
+
+  <div class="menu-wrapper _fixed menu_translatex_0_first">
+    <a href="#" class="logo">
+        <img class="logo-img" style="width: 88px; height: 88px;" src="https://one-thailand.com/assets/img/logoback.png?lastmod=1700105349" onerror="this.src='https://placehold.co/50x50?text=no image';">
+    </a>
+    
+    <!-- เพิ่มเมนูตรงนี้ -->
+    <a href="#">Home</a>
+  </div>
+
+  <div class="content">
+      <!-- เนื้อหาหลักของเว็บไซต์ -->
+      <form class="row g-3">
+        <tbody>
+          <div id="data-container">
+          </div>
+        </tbody>
+      </form>
+  </div>
+  <!-- JavaScript เพื่อทำ AJAX request -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      fetchDataAndDisplay();
+    });
+  
+    async function fetchDataAndDisplay() {
+      try {
+        const response = await fetch('http://localhost:8000/backend/display_data.php');
+        const data = await response.json();
+
+        // เรียกใช้ฟังก์ชันสำหรับแสดงข้อมูล
+        displayDataInTable(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    // ฟังก์ชันสำหรับแสดงข้อมูลในตาราง
+    function displayDataInTable(data) {
+      const tableBody = document.querySelector('table tbody');
+
+      // ตรวจสอบว่ามีข้อมูลหรือไม่
+      if (data.length > 0) {
+        // วนลูปเพื่อแสดงข้อมูลในตาราง
+        data.forEach(row => {
+          const tableRow = document.createElement('tr');
+          tableRow.innerHTML = `
+            <td>${row.id}</td>
+            <td>${row.county}</td>
+            <td>${row.coupon_code}</td>
+            <td>${row.couponType}</td>
+            <td>${row.discount_value}</td>
+            <td>${row.couponNumber}</td>
+            <td>${row.creation_date}</td>
+            <td>${row.expiration_date}</td>
+            <td>${row.store}</td>
+            <td>${row.usage_status}</td>
+          `;
+
+          // เพิ่มข้อมูลลงใน tbody
+          tableBody.appendChild(tableRow);
+        });
+      } else {
+        // ถ้าไม่มีข้อมูล
+        const noDataRow = document.createElement('tr');
+        noDataRow.innerHTML = '<td colspan="10">No data found.</td>';
+        tableBody.appendChild(noDataRow);
+      }
+    }
+  </script>
+</body>
+</html>
