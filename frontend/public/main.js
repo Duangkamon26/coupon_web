@@ -1,92 +1,23 @@
 
-async function fetchDataAndDisplay() {
-    try {
-        const response = await fetch('http://localhost:8000/backend/display_data.php');
-        const data = await response.text();
-        console.log(data);  // แสดงข้อมูลที่ได้รับใน Console
-        document.getElementById('data-container').innerHTML = data;
-        displayDataInTable(data);  // ลองแสดงข้อมูลที่ได้ในตาราง
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-
-// ในไฟล์ main.js ทำการเรียกใช้ fetchDataAndDisplay ที่ตอนท้ายไฟล์
-document.addEventListener('DOMContentLoaded', function() {
-    fetchDataAndDisplay();
-});
-
-
-function fetchDataAndDisplay() {
-    var element = document.getElementById('nonExistentElement');
-
-    // ตรวจสอบว่า element มีอยู่จริงก่อนที่จะทำอย่างอื่น
-    if (element) {
-        element.innerHTML = 'Some content';
-    } else {
-        console.error('Element not found.');
-    }
-}
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     fetchDataAndDisplay();
-//   });
-  
-//   async function fetchDataAndDisplay() {
+// async function fetchDataAndDisplay() {
 //     try {
-//       const response = await fetch('http://localhost:8000/backend/display_data.php');
-//       const data = await response.json();
-  
-//       // Get the table body element
-//       const tableBody = document.querySelector('table tbody');
-  
-//       // Check if the table body element exists
-//       if (tableBody) {
-//         // Clear existing content
-//         tableBody.innerHTML = '';
-  
-//         // Call the function to display data in the table
-//         displayDataInTable(data, tableBody);
-//       } else {
-//         console.error('Table body element not found.');
-//       }
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//     }
+//         const response = await fetch('http://localhost:8000/backend/display_data.php');
+//         const responseData = await response.text();
+//     console.log('Response Data:', responseData);  // แสดงข้อมูลที่ได้รับ
+
+//     // ต่อไปนี้: ลองแปลง responseData เป็น JSON
+//     const data = JSON.parse(responseData);
+//     console.log('Parsed Data:', data);
+
+//     // ... ส่วนอื่น ๆ ของโค้ด
+//   } catch (error) {
+//     console.error('Error fetching data:', error);
 //   }
-  
-//   // Function to display data in the table
-//   function displayDataInTable(data, tableBody) {
-//     // Check if data is an array and not empty
-//     if (Array.isArray(data) && data.length > 0) {
-//       // Loop through the data and create table rows
-//       data.forEach(row => {
-//         const tableRow = document.createElement('tr');
-//         tableRow.innerHTML = `
-//           <td>${row.id}</td>
-//           <td>${row.county}</td>
-//           <td>${row.coupon_code}</td>
-//           <td>${row.couponType}</td>
-//           <td>${row.discount_value}</td>
-//           <td>${row.couponNumber}</td>
-//           <td>${row.creation_date}</td>
-//           <td>${row.expiration_date}</td>
-//           <td>${row.store}</td>
-//           <td>${row.usage_status}</td>
-//         `;
-  
-//         // Append the table row to the table body
-//         tableBody.appendChild(tableRow);
-//       });
-//     } else {
-//       // If no data or data is not an array
-//       const noDataRow = document.createElement('tr');
-//       noDataRow.innerHTML = '<td colspan="10">No data found.</td>';
-//       tableBody.appendChild(noDataRow);
-//     }
-//   }
-  
+// }
+
+var someElement = document.getElementById('someElementId');
+console.log(someElement); // ดูค่าที่ console
+
 
 // ฟังก์ชันยืนยันการส่งข้อมูล
 function confirmSubmission() {
@@ -108,66 +39,98 @@ function submitForm() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
-    .then(data => {
-        alert(data); // แสดงข้อความจากเซิร์ฟเวอร์
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+        .then(response => response.text())
+        .then(data => {
+            alert(data); // แสดงข้อความจากเซิร์ฟเวอร์
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // ตัวอย่างการเชื่อมโยงฟังก์ชัน saveDataToBackend กับปุ่มที่มี id เป็น 'saveButton'
+document.addEventListener('DOMContentLoaded', function () {
     var saveButton = document.getElementById('saveButton');
     if (saveButton) {
-      saveButton.addEventListener('click', saveDataToBackend);
+        saveButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            saveDataToBackend();
+        });
+    } else {
+        throw new Error('Element with ID "saveButton" not found.');
     }
-  });
-
-
+});
 function saveDataToBackend() {
     // รับค่าจากฟอร์มหรือทำอย่างอื่นตามที่ต้องการ
-    var county = document.getElementById('countyInput').value;
-    var coupon_code = document.getElementById('coupon_codeInput').value;
-    var couponType = document.getElementById('couponTypeInput').value;
-    var discount_value = document.getElementById('discount_valueInput').value;
-    var couponNumber = document.getElementById('couponNumberInput').value;
-    var creation_date = document.getElementById('creation_dateInput').value;
-    var expiration_date = document.getElementById('expiration_dateInput').value;
-    var store = document.getElementById('storeInput').value;
-    var usage_status = document.getElementById('usage_statusInput').value;
-    
+    var county = document.getElementById('countyInput');
+    var coupon_code = document.getElementById('coupon_codeInput');
+    var couponType = document.getElementById('couponTypeInput');
+    var discount_value = document.getElementById('discount_valueInput');
+    var couponNumber = document.getElementById('couponNumberInput');
+    var creation_date = document.getElementById('creation_dateInput');
+    var expiration_date = document.getElementById('expiration_dateInput');
+    var creation_date1 = document.getElementById('creation_date1Input');
+    var expiration_date1 = document.getElementById('expiration_date1Input');
+    var store = document.getElementById('storeInput');
+    var usage_status = document.getElementById('usage_statusInput');
+    var displayType = document.getElementById('displayTypeInput');
+    var details1 = document.getElementById('details1Input');
+    var details2 = document.getElementById('details2Input');
+    var formFile = document.getElementById('formFileInput');
+    var startTime = document.getElementById('startTimeInput');
+    var endTime = document.getElementById('endTimeInput');
+    var defaultCheck = document.getElementById('defaultCheckInput');
+    var startDistance = document.getElementById('startDistanceInput');
+    var endDistance = document.getElementById('endDistanceInput');
+    var couponType1 = document.getElementById('couponType1Input');
+    var valueType = document.getElementById('valueTypeInput');
+    var discountValueType = document.getElementById('discountValueTypeInput');
+    var discountValueType1 = document.getElementById('discountValueType1Input');
+    var discountValueType2 = document.getElementById('discountValueType2Input');
+    var discountValueType3 = document.getElementById('discountValueType3Input');
+    var minimumValue = document.getElementById('minimumValueInput');
+    var discountType = document.getElementById('discountTypeInput');
+    var maximumDiscount = document.getElementById('maximumDiscountInput');
+    var repeatCoupons = document.getElementById('repeatCouponsInput');
+    var storeType = document.getElementById('storeTypeInput');
+    var couponAutomatic = document.getElementById('couponAutomaticInput');
+    var customer = document.getElementById('customerInput');
 
     // สร้าง object ที่มีข้อมูลที่ต้องการส่งไปที่ backend
     var data = {
-        county: county,
-        coupon_code: coupon_code,
-        couponType: couponType,
-        discount_value: discount_value,
-        couponNumber: couponNumber,
-        creation_date: creation_date,
-        expiration_date: expiration_date,
-        store: store,
-        usage_status: usage_status
+        county: county ? county.value : '',
+        coupon_code: coupon_code ? coupon_code.value : '',
+        couponType: couponType ? couponType.value : '',
+        discount_value: discount_value ? discount_value.value : '',
+        couponNumber: couponNumber ? couponNumber.value : '',
+        creation_date: creation_date ? creation_date.value : '',
+        expiration_date: expiration_date ? expiration_date.value : '',
+        creation_date1: creation_date1 ? creation_date1.value : '',
+        expiration_date1: expiration_date1 ? expiration_date1.value : '',
+        store: store ? store.value : '',
+        usage_status: usage_status ? usage_status.value : '',
+        displayType: displayType ? displayType.value : '',
+        details1: details1 ? details1.value : '',
+        details2: details2 ? details2.value : '',
+        formFile: formFile ? formFile.value : '',
+        startTime: startTime ? startTime.value : '',
+        endTime: endTime ? endTime.value : '',
+        defaultCheck: defaultCheck ? defaultCheck.value : '',
+        startDistance: startDistance ? startDistance.value : '',
+        endDistance: endDistance ? endDistance.value : '',
+        couponType1: couponType1 ? couponType1.value : '',
+        valueType: valueType ? valueType.value : '',
+        discountValueType: discountValueType ? discountValueType.value : '',
+        discountValueType1: discountValueType1 ? discountValueType1.value : '',
+        discountValueType2: discountValueType2 ? discountValueType2.value : '',
+        discountValueType3: discountValueType3 ? discountValueType3.value : '',
+        minimumValue: minimumValue ? minimumValue.value : '',
+        discountType: discountType ? discountType.value : '',
+        maximumDiscount: maximumDiscount ? maximumDiscount.value : '',
+        repeatCoupons: repeatCoupons ? repeatCoupons.value : '',
+        storeType: storeType ? storeType.value : '',
+        couponAutomatic: couponAutomatic ? couponAutomatic.value : '',
+        customer: customer ? customer.value : '',
 
     };
 
-    // ทำการ fetch หรือใช้ AJAX library เพื่อส่งข้อมูลไปที่ backend
-    fetch('http://localhost:8000/backend/save_data.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
-        // ทำอะไรก็ตามที่ต้องการเมื่อบันทึกข้อมูลเสร็จสมบูรณ์
-        console.log(result);
-    })
-    .catch(error => {
-        // ทำอะไรก็ตามที่ต้องการเมื่อเกิดข้อผิดพลาด
-        console.error('Error saving data:', error);
-    });
 }
