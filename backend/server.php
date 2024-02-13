@@ -1,21 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "coupon_sql";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $database);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// ตรวจสอบการเชื่อมต่อฐานข้อมูล
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+include 'connDB.php';
 
 // รับข้อมูลจากฟอร์ม
 $county = isset($_POST['county']) ? $_POST['county'] : '';
@@ -29,16 +14,21 @@ $store = isset($_POST['store']) ? $_POST['store'] : '';
 $usage_status = isset($_POST['usage_status']) ? $_POST['usage_status'] : '';
 
 // สร้างคำสั่ง SQL เพื่อบันทึกข้อมูล
-$sql = "INSERT INTO coupon (`county`,`coupon_code`,`couponType`,`discount_value`,`couponNumber`,`creation_date`,`expiration_date`,`store`,`usage_status`) VALUES (?,?,?,?,?,?,?,?,?)";
+$sql = "INSERT INTO admincoupon (`county`,`coupon_code`,`couponType`,`discount_value`,`couponNumber`,`creation_date`,`expiration_date`,`store`,`usage_status`) VALUES (?,?,?,?,?,?,?,?,?)";
 
 // Prepare and bind
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sssssssss", $county, $coupon_code, $couponType, $discount_value, $couponNumber, $creation_date, $expiration_date, $store, $usage_status);
 
+// Debug: แสดงข้อมูลที่ถูกส่งมาจากฟอร์ม
+var_dump($_POST);
+
 // Execute SQL statement
 if ($stmt->execute()) {
     echo "บันทึกข้อมูลเรียบร้อย";
 } else {
+    // Debug: แสดงข้อผิดพลาดที่เกิดขึ้นในการ execute SQL statement
+    var_dump($stmt->error);
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
 

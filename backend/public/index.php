@@ -63,7 +63,13 @@ include __DIR__ . '/../../backend/display_data.php';
                             <td>${row.id}</td>
                             <td>${row.county}</td>
                             <td>${row.coupon_code}</td>
-                            <!-- เพิ่มคอลัมน์ตามข้อมูลที่ต้องการแสดง -->
+                            <td>${row.couponType}</td>
+                            <td>${row.discount_value}</td>
+                            <td>${row.couponNumber}</td>
+                            <td>${row.creation_date}</td>
+                            <td>${row.expiration_date}</td>
+                            <td>${row.store}</td>
+                            <td>${row.usage_status}</td>
                         `;
 
                         // เพิ่มข้อมูลลงใน tbody

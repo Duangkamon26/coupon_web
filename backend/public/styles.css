@@ -1,95 +1,95 @@
 /* Add your styles here */
-body {
-    font-family: Arial, sans-serif;
-}
+    body {
+        font-family: Arial, sans-serif;
+    }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-}
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
 
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
-}
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
 
-button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
-button:hover {
-    background-color: #45a049;
-}
+    button:hover {
+        background-color: #45a049;
+    }
 
-.result {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-.menu-wrapper {
-    background-color: #333; /* สีพื้นหลังของแถบเมนู */
-    font-family: 'Itim', sans-serif;
-    color: white; /* สีข้อความ */
-    padding: 5px; /* ระยะห่างของขอบแถบเมนู */
-    display: flex;
-    flex-direction: column; /* แนวทแยงของแถบเมนูเป็นแนวตั้ง */
-    align-items: flex-start; /* จัดวางที่ซ้ายของหน้าจอ */
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh; /* 100% ของความสูงของหน้าจอ */
-    z-index: 1000; /* ตั้งค่า z-index เพื่อให้แถบเมนูแสดงทับบนเนื้อหา */
-}
+    .result {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .menu-wrapper {
+        background-color: #333; /* สีพื้นหลังของแถบเมนู */
+        font-family: 'Itim', sans-serif;
+        color: white; /* สีข้อความ */
+        padding: 5px; /* ระยะห่างของขอบแถบเมนู */
+        display: flex;
+        flex-direction: column; /* แนวทแยงของแถบเมนูเป็นแนวตั้ง */
+        align-items: flex-start; /* จัดวางที่ซ้ายของหน้าจอ */
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh; /* 100% ของความสูงของหน้าจอ */
+        z-index: 1000; /* ตั้งค่า z-index เพื่อให้แถบเมนูแสดงทับบนเนื้อหา */
+    }
 
-.menu-wrapper a {
-    text-decoration: none;
-    color: white;
-    margin: 10px 0; /* ระยะห่างระหว่างเมนู */
-}
+    .menu-wrapper a {
+        text-decoration: none;
+        color: white;
+        margin: 10px 0; /* ระยะห่างระหว่างเมนู */
+    }
 
-.logo-img {
-    width: 88px;
-    height: 88px;
-    margin-bottom: 20px; /* ระยะห่างระหว่างโลโก้และเมนู */
-}
+    .logo-img {
+        width: 88px;
+        height: 88px;
+        margin-bottom: 20px; /* ระยะห่างระหว่างโลโก้และเมนู */
+    }
 
-.content {
-    font-family: 'Itim', sans-serif;
-    font-size: 18px;
-    margin-left: 120px; /* ระยะห่างซ้ายของเนื้อหา */
-    padding: 40px;
-}
+    .content {
+        font-family: 'Itim', sans-serif;
+        font-size: 18px;
+        margin-left: 120px; /* ระยะห่างซ้ายของเนื้อหา */
+        padding: 40px;
+    }
 
-.message-box {
-    border: 1px solid rgb(255, 255, 255); /* เส้นขอบกรอบ */
-    background-color: #ffffff;
-    padding: 10px; /* ระยะห่างขอบภายในกรอบ */
-    width: 1300px; /* ความกว้างของกรอบ */
-    margin: 20px; /* ระยะห่างรอบกรอบ */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* เพิ่มเงาดำ */
-}
+    .message-box {
+        border: 1px solid rgb(255, 255, 255); /* เส้นขอบกรอบ */
+        background-color: #ffffff;
+        padding: 10px; /* ระยะห่างขอบภายในกรอบ */
+        width: 1300px; /* ความกว้างของกรอบ */
+        margin: 20px; /* ระยะห่างรอบกรอบ */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* เพิ่มเงาดำ */
+    }
 
-.form-select {
-    width: 20%; /* กำหนดความกว้างเป็น 100% */
-    padding: 10px; /* ปรับขนาด padding ตามต้องการ */
-    box-sizing: border-box; /* รวม padding ในขนาดทั้งหมด */
-}
+    .form-select {
+        width: 20%; /* กำหนดความกว้างเป็น 100% */
+        padding: 10px; /* ปรับขนาด padding ตามต้องการ */
+        box-sizing: border-box; /* รวม padding ในขนาดทั้งหมด */
+    }
 
-/* สไตล์ของ container ที่จะให้เลื่อน */
-.scroll-container {
-    overflow-x: auto;
-    white-space: nowrap;
-}
+    /* สไตล์ของ container ที่จะให้เลื่อน */
+    .scroll-container {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 
-/* สไตล์ของเนื้อหาที่จะเลื่อน */
-.scroll-content {
-    width: 200%; /* ขยายความกว้างของเนื้อหาเพื่อให้มีเนื้อหาข้างซ้ายและข้างขวาที่สามารถเลื่อนได้ */
-}
+    /* สไตล์ของเนื้อหาที่จะเลื่อน */
+    .scroll-content {
+        width: 200%; /* ขยายความกว้างของเนื้อหาเพื่อให้มีเนื้อหาข้างซ้ายและข้างขวาที่สามารถเลื่อนได้ */
+    }

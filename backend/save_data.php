@@ -1,41 +1,49 @@
 <?php
-include 'server.php'; // เชื่อมต่อฐานข้อมูล
+
+include 'connDB.php'; // เชื่อมต่อฐานข้อมูล
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // รับข้อมูลจากฟอร์ม
-    $county = isset($_POST['county']) ? $_POST['county'] : '';
-    $coupon_code = isset($_POST['coupon_code']) ? $_POST['coupon_code'] : '';
-    $couponType = isset($_POST['couponType']) ? $_POST['couponType'] : '';
-    $discount_value = isset($_POST['discount_value']) ? $_POST['discount_value'] : '';
-    $couponNumber = isset($_POST['couponNumber']) ? $_POST['couponNumber'] : '';
-    $creation_date = isset($_POST['creation_date']) ? $_POST['creation_date'] : '';
-    $expiration_date = isset($_POST['expiration_date']) ? $_POST['expiration_date'] : '';
-    $store = isset($_POST['store']) ? $_POST['store'] : '';
-    $usage_status = isset($_POST['usage_status']) ? $_POST['usage_status'] : '';
+    $entityBody = file_get_contents('php://input');
+    $entityBody = json_decode($entityBody);
+
+    $county = isset($entityBody->county) ? $entityBody->county : '';
+    $coupon_code = isset($entityBody->coupon_code) ? $entityBody->coupon_code : '';
+    $couponType = isset($entityBody->couponType) ? $entityBody->couponType : '';
+    $discount_value = isset($entityBody->discount_value) ? $entityBody->discount_value : '';
+    $couponNumber = isset($entityBody->couponNumber) ? $entityBody->couponNumber : '';
+    $creation_date = isset($entityBody->creation_date) ? $entityBody->creation_date : '';
+    $expiration_date = isset($entityBody->expiration_date) ? $entityBody->expiration_date : '';
+    $store = isset($entityBody->store) ? $entityBody->store : '';
+    $usage_status = isset($entityBody->usage_status) ? $entityBody->usage_status : '';
 
     // สร้างคำสั่ง SQL เพื่อบันทึกข้อมูล
-    $sql = "INSERT INTO coupon (`county`,`coupon_code`,`couponType`,`discount_value`,`couponNumber`,`creation_date`,`expiration_date`,`store`,`usage_status`) VALUES (?,?,?,?,?,?,?,?,?)";
+    $column = "(`county`,`coupon_code`,`couponType`,`discount_value`,`couponNumber`,`creation_date`,`expiration_date`,`store`,`usage_status`)";
+    
+    $value = "(";
+    $value .= "'" . $county . "', ";
+    $value .= "'" . $coupon_code . "', ";
+    $value .= "'" . $couponType . "', ";
+    $value .= "'" . $discount_value . "', ";
+    $value .= "'" . $couponNumber . "', ";
+    $value .= "'" . $creation_date . "', ";
+    $value .= "'" . $expiration_date . "', ";
+    $value .= "'" . $store . "', ";
+    $value .= "'" . $usage_status . "'";
+    $value .= ")";
 
-    // Prepare and bind
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssssss", $county, $coupon_code, $couponType, $discount_value, $couponNumber, $creation_date, $expiration_date, $store, $usage_status);
+    $sql = "INSERT INTO admincoupon " . $column . "  VALUES " . $value;
 
-    // Execute SQL statement
-    if ($stmt->execute()) {
-        // ส่งค่ากลับในรูปแบบ JSON
-        echo json_encode(array("status" => "success", "message" => "บันทึกข้อมูลเรียบร้อย"));
+    if ($conn->query($sql) === TRUE) {
+        echo json_encode(["status" => true, "res" => null, "msg" => "บันทึกข้อมูลสำเร็จ !"]);
     } else {
-        // ส่งค่ากลับในรูปแบบ JSON พร้อมกับข้อความผิดพลาด
-        http_response_code(500); // Internal Server Error
-        echo json_encode(array("status" => "error", "message" => "Error: " . $sql . "<br>" . $conn->error));
+        echo json_encode(["status" => false, "res" => null, "msg" => "บันทึกข้อมูลไม่สำเร็จ !"]);
     }
 
+    return;
 
-
-    // ปิด statement
-    $stmt->close();
 }
 
 // ปิดการเชื่อมต่อฐานข้อมูล
-$conn->close();
+// $conn->close();
 ?>
