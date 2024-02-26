@@ -18,6 +18,15 @@
 var someElement = document.getElementById('someElementId');
 console.log(someElement); // ดูค่าที่ console
 
+// document.addEventListener("DOMContentLoaded", function() {
+//     var buttonStatus = localStorage.getItem('buttonStatus');
+//     if (buttonStatus === 'closed') {
+//         var button = document.getElementById('myButton');
+//         button.classList.remove('btn-success');
+//         button.classList.add('btn-danger');
+//         button.textContent = 'ปิดใช้งาน';
+//     }
+// });
 
 // ฟังก์ชันยืนยันการส่งข้อมูล
 function confirmSubmission() {
@@ -30,12 +39,13 @@ function confirmSubmission() {
     }
 }
 
+
 // ฟังก์ชันสำหรับการส่งฟอร์ม
 function submitForm() {
     var formData = new FormData(document.getElementById("myForm"));
 
     // ตัวอย่างการใช้ fetch API สำหรับคำขอที่ไม่ซิงโครนัส
-    fetch('http://localhost:8000/backend/save_data.php', {
+    fetch('http://localhost/backend/save_data.php', {
         method: 'POST',
         body: formData
     })
@@ -59,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error('Element with ID "saveButton" not found.');
     }
 });
+
 function saveDataToBackend() {
     // รับค่าจากฟอร์มหรือทำอย่างอื่นตามที่ต้องการ
     var county = document.getElementById('countyInput');
@@ -83,10 +94,9 @@ function saveDataToBackend() {
     var endDistance = document.getElementById('endDistanceInput');
     var couponType1 = document.getElementById('couponType1Input');
     var valueType = document.getElementById('valueTypeInput');
-    var discountValueType = document.getElementById('discountValueTypeInput');
-    var discountValueType1 = document.getElementById('discountValueType1Input');
-    var discountValueType2 = document.getElementById('discountValueType2Input');
-    var discountValueType3 = document.getElementById('discountValueType3Input');
+    var calculateDiscount1 = document.getElementById('calculateDiscount1Input');
+    var calculateDiscount2 = document.getElementById('calculateDiscount2Input');
+    var calculateDiscount3 = document.getElementById('calculateDiscount3Input');
     var minimumValue = document.getElementById('minimumValueInput');
     var discountType = document.getElementById('discountTypeInput');
     var maximumDiscount = document.getElementById('maximumDiscountInput');
@@ -119,10 +129,9 @@ function saveDataToBackend() {
         endDistance: endDistance ? endDistance.value : '',
         couponType1: couponType1 ? couponType1.value : '',
         valueType: valueType ? valueType.value : '',
-        discountValueType: discountValueType ? discountValueType.value : '',
-        discountValueType1: discountValueType1 ? discountValueType1.value : '',
-        discountValueType2: discountValueType2 ? discountValueType2.value : '',
-        discountValueType3: discountValueType3 ? discountValueType3.value : '',
+        calculateDiscount1: calculateDiscount1 ? calculateDiscount1.value : '',
+        calculateDiscount2: calculateDiscount2 ? calculateDiscount2.value : '',
+        calculateDiscount3: calculateDiscount3 ? calculateDiscount3.value : '',
         minimumValue: minimumValue ? minimumValue.value : '',
         discountType: discountType ? discountType.value : '',
         maximumDiscount: maximumDiscount ? maximumDiscount.value : '',
@@ -134,3 +143,28 @@ function saveDataToBackend() {
     };
 
 }
+
+// if (xhr.status === 200) {
+//     try {
+//       const data = JSON.parse(xhr.responseText);
+  
+//       // ตรวจสอบค่า data.status
+//       if (data.status === 0) {
+//         // ปิดใช้งานปุ่มสีแดง
+//         const redButtonElement = document.getElementById('redButton');
+//         redButtonElement.classList.remove('active');
+//       } else if (data.status === 1) {
+//         // เปิดใช้งานปุ่มสีเขียว
+//         const greenButtonElement = document.getElementById('greenButton');
+//         greenButtonElement.classList.add('active');
+//       } else {
+//         console.error('ค่า data.status ไม่ถูกต้อง: ' + data.status);
+//       }
+//     } catch (error) {
+//       console.error('เกิดข้อผิดพลาด: ', error);
+//     }
+//   } else {
+//     console.error('เกิดข้อผิดพลาด: ' + xhr.statusText);
+//   }
+
+  

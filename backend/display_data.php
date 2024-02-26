@@ -20,14 +20,15 @@ header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Max-Age: 86400');
 
 // ดึงข้อมูลจากฐานข้อมูล
-$sql = "SELECT * FROM admincoupon";
+$sql = "SELECT * FROM couponadmin";
 $result = $conn->query($sql);
 
 // สร้าง array เพื่อเก็บข้อมูลที่ได้จากฐานข้อมูล
 $data = array();
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+        // $data[] = 1;
+        if(json_encode($row)) $data[] = $row;
     }
 }
 
