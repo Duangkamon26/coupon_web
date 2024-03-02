@@ -78,7 +78,7 @@
                     <div class="mb-3">
                         <label for="displayTypeInput" class="form-label">ประเภทการแสดง *</label>
                     </div>
-                    <select id="displayTypeInput" class="form-select" type="select" aria-label="Display Type" required>
+                    <select id="displayTypeInput" class="form-select" aria-label="Display Type" required>
                         <option selected> </option>
                         <option value="แสดงหน้าใช้คูปอง">แสดงหน้าใช้คูปอง</option>
                         <option value="ค้นหา">ค้นหา</option>
@@ -98,8 +98,10 @@
                 </div>
                 <div class="mb-3">
                     <label for="formFileInput" class="form-label">รูปคูปอง</label>
-                    <input class="form-control" type="file" id="formFileInput" required>
+                    <input class="form-control" type="file" id="formFileInput" name="couponImage" accept="image/*" onchange="displayImage()">
+                    <img id="couponImagePreview" src="" alt="Coupon Image" style="max-width: 200px;">
                 </div>
+
             </div>
 
 
@@ -117,11 +119,11 @@
                 </div>
                 <div class="col-md-6 date-fields">
                     <label for="creation_dateInput" class="form-label">วันเริ่มต้น</label>
-                    <input type="date" class="form-control" id="creation_dateInput" name="creation_date">
+                    <input type="date" class="form-control" id="creation_dateInput" name="creation_dateInput">
                 </div>
                 <div class="col-md-6 date-fields">
                     <label for="expiration_dateInput" class="form-label">วันหมดอายุ</label>
-                    <input type="date" class="form-control" id="expiration_dateInput" name="expiration_date">
+                    <input type="date" class="form-control" id="expiration_dateInput" name="expiration_dateInput">
                 </div>
                 <div class="col-md-6 date-fields">
                     <label for="startTimeInput" class="form-label">เวลาเริ่มต้น (เริ่มที่ 00:00)</label>
@@ -273,8 +275,8 @@
                     <label for="usage_statusInput" class="form-label">สถานะ *</label>
                     <select id="usage_statusInput" class="form-select" aria-label="District" required>
                         <option selected> </option>
-                        <option value="เปิดใช้งาน">เปิดใช้งาน</option>
-                        <option value="ปิดใช้งาน">ปิดใช้งาน</option>
+                        <option value="1">เปิดใช้งาน</option>
+                        <option value="0">ปิดใช้งาน</option>
                     </select>
                 </div>
             </div>
@@ -332,13 +334,37 @@
         $(document).ready(function() {
             console.log('getUrlVars() -> ', getUrlVars())
             const queryParam = getUrlVars();
-
+            
             if (queryParam['id'] != undefined && +queryParam['id'] != 0) {
                 idEdit = +queryParam['id'];
                 getDataById()
                 console.log('idEdit -> ', idEdit)
             }
         });
+
+        function displayImage(data) {
+            const imageUrl = data ? data.formFile : ""; // สมมติว่า formFile เป็นชื่อของฟิลด์ที่เก็บชื่อไฟล์รูปภาพ
+            const preview = document.getElementById('couponImagePreview');
+            
+            if (imageUrl && imageUrl !== "") {
+                preview.src = imageUrl;
+            } else {
+                const fileInput = document.getElementById('formFileInput');
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+
+                reader.onloadend = function () {
+                    preview.src = reader.result;
+                }
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = "";
+                }
+            }
+        }
+
 
         function getDataById() {
             fetch(`../../backend/getDataById.php?id=${idEdit}`, {
@@ -385,6 +411,8 @@
                     $("#storeTypeInput").val(data.storeType)
                     $("#couponAutomaticInput").val(data.couponAutomatic)
                     $("#customerInput").val(data.customer)
+
+                    displayImage(data);
 
                 })
                 .catch(error => {
@@ -476,15 +504,23 @@
                     },
                     body: JSON.stringify(body),
                 })
-                .then(response => response.text())
+                // .then(response => response.text())
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('เกิดข้อผิดพลาดในการรับข้อมูล');
+                    }
+                })
                 .then(data => {
-                    data = JSON.parse(data)
+                    // data = JSON.parse(data)
                     console.log(data); // แสดงข้อความจาก backend
 
                     Swal.fire({
                         position: "top-end",
                         icon: data.status ? "success" : "error",
-                        title: data.msg,
+                        title: "บันทึกข้อมูลสำเร็จ",
+                        // title: data.msg,
                         showConfirmButton: false,
                         timer: 1500
                     });

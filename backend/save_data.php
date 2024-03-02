@@ -1,5 +1,7 @@
 <?php
 
+$token = "0oknYox2vo0m0bSRqt8buJFNhiNKjnNzxSZdKkDcPMK"; // ใส่ Token ของคุณที่นี่
+
 include 'connDB.php'; // เชื่อมต่อฐานข้อมูล
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -80,16 +82,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $sql = "INSERT INTO couponadmin " . $column . "  VALUES " . $value;
 
-    if ($conn->query($sql) === TRUE) {
-        echo json_encode(["status" => true, "res" => null, "msg" => "บันทึกข้อมูลสำเร็จ !", "dev_log"=>'']);
-    } else {
-        echo json_encode(["status" => false, "res" => null, "msg" => "บันทึกข้อมูลไม่สำเร็จ !", "dev_log"=> $sql]);
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error()); // Handle connection error
     }
 
-    return;
+    $result = $conn->query($sql);
 
+
+    if ($result === TRUE) {
+        // แปลงข้อความเป็น JSON
+        $response_data = ["status" => true, "res" => null, "msg" => "บันทึกข้อมูลสำเร็จ !", "dev_log" => ''];
+        $json_response = json_encode($response_data);
+        
+        // เรียกใช้ฟังก์ชันส่ง Line Notify
+        sendLineNotify($conn, $token);
+    } else {
+        // แปลงข้อความเป็น JSON
+        $response_data = ["status" => false, "res" => null, "msg" => "บันทึกข้อมูลไม่สำเร็จ !", "dev_log" => $sql];
+        $json_response = json_encode($response_data);
+    }
+    
 }
 
-// ปิดการเชื่อมต่อฐานข้อมูล
+function sendLineNotify($conn, $token) {
+    if (is_object($conn) && method_exists($conn, 'query')) {
+        // Fetch the latest coupon data
+        $result = $conn->query("SELECT coupon_code, creation_date, expiration_date FROM couponadmin ORDER BY id DESC LIMIT 1");
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $coupon_code = $row['coupon_code'];
+            $creation_date = $row['creation_date'];
+            $expiration_date = $row['expiration_date'];
+
+            // Prepare message for Line Notify
+            $message = "รหัสคูปอง $coupon_code คูปองถูกสร้างเมื่อ $creation_date และหมดอายุเมื่อ $expiration_date";
+
+            // Send Line Notify
+            sendLineNotifyMessage($message, $token);
+        } else {
+            // If no coupon data is found, handle the error
+            sendLineNotifyMessage("ไม่พบข้อมูลคูปอง", $token);
+        }
+    } else {
+        // Handle the case when $conn is not a valid database connection object
+        sendLineNotifyMessage("ไม่สามารถเชื่อมต่อกับฐานข้อมูลได้", $token);
+    }
+}
+
+
+
+
+
+function sendLineNotifyMessage($message, $token) {
+    $message = json_decode('"' . $message . '"');
+    $ch = curl_init();
+    curl_setopt_array($ch, [
+        CURLOPT_URL => "https://notify-api.line.me/api/notify",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "message=$message",
+        CURLOPT_HTTPHEADER => [
+            "Authorization: Bearer $token",
+            "Content-Type: application/x-www-form-urlencoded",
+        ],
+    ]);
+    $response = curl_exec($ch);
+    $err = curl_error($ch);
+    curl_close($ch);
+    if ($err) {
+        echo "cURL Error #:" . $err;
+    } else {
+        echo $response;
+    }
+}
+
+// Close the database connection
 $conn->close();
+
 ?>

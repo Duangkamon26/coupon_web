@@ -211,8 +211,8 @@ if (isset($_GET['delete_id'])) {
         // html += `<td>${res.usage_status}</td>`;
         html += `<td>`;
         html += `<div style="display: flex; justify-content: space-between;">`;
-        html += `<a href="index.php?id=${res.id}" class="btn btn-warning" style="margin-right: 5px;">แก้ไข</a>`;
-        html += `<a href="?delete_id=${res.id}" class="btn btn-danger delete">ลบ</a>`;
+        html += `<a href="index.php?id=${res.id}" target="_blank" class="btn btn-warning" style="margin-right: 5px;">แก้ไข</a>`;
+        html += `<a href="#" class="btn btn-danger delete" onclick="confirmDelete(${res.id})">ลบ</a>`;
         html += `</div>`;
         html += `</td>`;
         html += `</tr>`;
@@ -222,14 +222,36 @@ if (isset($_GET['delete_id'])) {
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-      var deleteButtons = document.querySelectorAll(".delete");
-      deleteButtons.forEach(function(button) {
-        button.addEventListener("click", function() {
-          // ดึงข้อมูลหรือรหัสของรายการที่ต้องการลบ
-          var itemId = this.getAttribute("data-id");
+        var deleteButtons = document.querySelectorAll(".delete");
+        deleteButtons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                // ดึงข้อมูลหรือรหัสของรายการที่ต้องการลบ
+                var itemId = this.getAttribute("data-id");
+                
+                // เรียกใช้ฟังก์ชัน confirmDelete() และส่ง itemId เข้าไป
+                confirmDelete(res.id);
+            });
         });
-      });
     });
+
+    function confirmDelete(itemId) {
+        Swal.fire({
+            title: 'ยืนยันการลบ',
+            text: 'คุณแน่ใจหรือไม่ที่จะลบข้อมูลนี้?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'ใช่, ลบ!',
+            cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // เรียกใช้ฟังก์ชัน deleteData() เมื่อผู้ใช้กดปุ่ม "ใช่, ลบ!" และส่ง itemId ไปด้วย
+                window.location.href = `home.php?delete_id=${itemId}`;
+            }
+        });
+    }
+
 
     async function getButtonStatus(id) {
       try {

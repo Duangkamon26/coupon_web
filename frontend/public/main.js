@@ -144,27 +144,3 @@ function saveDataToBackend() {
 
 }
 
-// if (xhr.status === 200) {
-//     try {
-//       const data = JSON.parse(xhr.responseText);
-  
-//       // ตรวจสอบค่า data.status
-//       if (data.status === 0) {
-//         // ปิดใช้งานปุ่มสีแดง
-//         const redButtonElement = document.getElementById('redButton');
-//         redButtonElement.classList.remove('active');
-//       } else if (data.status === 1) {
-//         // เปิดใช้งานปุ่มสีเขียว
-//         const greenButtonElement = document.getElementById('greenButton');
-//         greenButtonElement.classList.add('active');
-//       } else {
-//         console.error('ค่า data.status ไม่ถูกต้อง: ' + data.status);
-//       }
-//     } catch (error) {
-//       console.error('เกิดข้อผิดพลาด: ', error);
-//     }
-//   } else {
-//     console.error('เกิดข้อผิดพลาด: ' + xhr.statusText);
-//   }
-
-  
